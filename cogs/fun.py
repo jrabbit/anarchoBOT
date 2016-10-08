@@ -1,36 +1,37 @@
-import discord;
-from discord.ext import commands;
-import textwrap;
+import discord
+from discord.ext import commands
+import textwrap
 
 class Fun:
     """ Commands that are used for fun. """
 
     def __init__(self, bot, config):
-        self.bot = bot;
-        self.config = config;
+        self.bot = bot
+        self.config = config
 
     @commands.group(pass_context=True)
     async def cow(self, ctx):
         """A speaking/thinking cow"""
-        print(ctx.message.content);
+        print(ctx.message.content)
         if ctx.invoked_subcommand is None:
-            return await self.bot.say('Invalid amount of arguments passed.');
+            return await self.bot.say('Invalid amount of arguments passed.')
 
     @cow.command()
     async def think(self, *, message : str):
-        cow = self.build_box(message, 40) + self.build_thinkcow();
+        cow = self.build_box(message, 40) + self.build_thinkcow()
 
-        return await self.bot.say('```txt\n{0}```'.format(cow));
+        return await self.bot.say('```txt\n{0}```'.format(cow))
 
     @cow.command()
     async def say(self, *, message : str):
-        cow = self.build_box(message, 40) + self.build_saycow();
+        cow = self.build_box(message, 40) + self.build_saycow()
 
-        return await self.bot.say('```txt\n{0}```'.format(cow));
+        return await self.bot.say('```txt\n{0}```'.format(cow))
 
 
 
     # Cowsay code used from https://github.com/jcn/cowsay-py
+    # Licensed under LGPL
 
     def build_saycow(self):
         return """
@@ -39,7 +40,7 @@ class Fun:
              (__)\       )\/\\
                  ||----w |
                  ||     ||
-        """;
+        """
 
     def build_thinkcow(self):
         return """
@@ -48,25 +49,25 @@ class Fun:
              (__)\       )\/\\
                  ||----w |
                  ||     ||
-        """;
+        """
 
     def build_box(self, str, length=40):
-        bubble = [];
+        bubble = []
 
-        lines = self.normalize_text(str, length);
+        lines = self.normalize_text(str, length)
 
-        bordersize = len(lines[0]);
+        bordersize = len(lines[0])
 
-        bubble.append("  "  + "_" * bordersize);
+        bubble.append("  "  + "_" * bordersize)
 
         for index, line in enumerate(lines):
-            border = self.get_border(lines, index);
+            border = self.get_border(lines, index)
 
-            bubble.append("%s %s %s" % (border[0], line, border[1]));
+            bubble.append("%s %s %s" % (border[0], line, border[1]))
 
-        bubble.append("  " + "-" * bordersize);
+        bubble.append("  " + "-" * bordersize)
 
-        return "\n".join(bubble);
+        return "\n".join(bubble)
 
     def normalize_text(self, str, length):
         lines  = textwrap.wrap(str, length)
@@ -75,13 +76,13 @@ class Fun:
 
     def get_border(self, lines, index):
         if len(lines) < 2:
-            return [ "<", ">" ];
+            return [ "<", ">" ]
 
         elif index == 0:
-            return [ "/", "\\" ];
+            return [ "/", "\\" ]
 
         elif index == len(lines) - 1:
-            return [ "\\", "/" ];
+            return [ "\\", "/" ]
 
         else:
-            return [ "|", "|" ];
+            return [ "|", "|" ]
